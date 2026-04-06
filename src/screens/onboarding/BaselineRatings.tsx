@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { YStack, XStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
 import { NavBar } from '../../components/NavBar'
-import { PrimaryButton, OutlineButton, ScreenContent, MutedText } from '../../components/shared'
+import { PrimaryButton, OutlineButton, ScreenContent } from '../../components/shared'
 
 const AREAS = ['Communication', 'Quality Time']
 
