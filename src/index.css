@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #E8E8E8;
+}
+
+/* Style native range inputs to match wireframe */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #D4D4D4;
+  border-radius: 3px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid #1C1C1C;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid #1C1C1C;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+
+/* Scrollbar styling for phone frame */
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Screen transition animations — no exit, instant swap + slide in */
+.animated-screen {
+  will-change: transform, opacity;
+}
+
+.animated-screen.fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.animated-screen.slide-left {
+  animation: slideFromRight 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.animated-screen.slide-right {
+  animation: slideFromLeft 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideFromRight {
+  from { transform: translateX(60px); opacity: 0.4; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideFromLeft {
+  from { transform: translateX(-60px); opacity: 0.4; }
+  to { transform: translateX(0); opacity: 1; }
+}
