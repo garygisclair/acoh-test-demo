@@ -51,7 +51,7 @@ export function HabitList() {
         <Separator marginVertical={12} borderColor="#F2F2F2" />
 
         {/* Goals summary */}
-        <SectionHeader title="Goals" linkText="View all &rarr;" linkTo="/habits/goals" />
+        <SectionHeader title="Goals" linkText="View all" linkTo="/habits/goals" />
         <YStack paddingHorizontal={24}>
           <WireCard>
             <YStack gap={4}>

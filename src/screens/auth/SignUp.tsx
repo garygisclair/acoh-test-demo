@@ -1,6 +1,27 @@
 import { YStack, XStack, Text, Separator } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
-import { LabeledInput, PrimaryButton, OutlineButton, ScreenContent, MutedText } from '../../components/shared'
+import { LabeledInput, PrimaryButton, ScreenContent, MutedText } from '../../components/shared'
+
+function SocialButton({ label, onPress }: { label: string; onPress?: () => void }) {
+  return (
+    <XStack
+      height={44}
+      borderRadius={9}
+      backgroundColor="#FFFFFF"
+      borderWidth={1}
+      borderColor="#D4D4D4"
+      alignItems="center"
+      justifyContent="center"
+      gap={10}
+      cursor="pointer"
+      onPress={onPress}
+      pressStyle={{ scale: 0.97, opacity: 0.85 }}
+    >
+      <XStack width={20} height={20} borderRadius={4} backgroundColor="#D4D4D4" />
+      <Text fontSize={14} fontWeight="600" color="#1C1C1C">{label}</Text>
+    </XStack>
+  )
+}
 
 export function SignUp() {
   const navigate = useNavigate()
@@ -11,8 +32,8 @@ export function SignUp() {
       <YStack gap={16} marginTop={8}>
         <LabeledInput label="Display Name" placeholder="Your name" />
         <LabeledInput label="Email" placeholder="email@example.com" />
-        <LabeledInput label="Password" placeholder="Create a password" />
-        <LabeledInput label="Confirm Password" placeholder="Confirm your password" />
+        <LabeledInput label="Password" placeholder="••••••••" />
+        <LabeledInput label="Confirm Password" placeholder="••••••••" />
       </YStack>
       <YStack marginTop={16}>
         <PrimaryButton label="Create Account" onPress={() => navigate('/onboarding/send-invitation')} />
@@ -23,8 +44,8 @@ export function SignUp() {
           <Text fontSize={13} color="#8C8C8C" paddingHorizontal={12}>or</Text>
           <Separator flex={1} />
         </XStack>
-        <OutlineButton label="Continue with Google" />
-        <OutlineButton label="Continue with Apple" />
+        <SocialButton label="Continue with Google" />
+        <SocialButton label="Continue with Apple" />
         <XStack justifyContent="center" gap={4}>
           <MutedText size={14}>Already have an account?</MutedText>
           <Text fontSize={14} fontWeight="600" color="#1C1C1C" cursor="pointer" onPress={() => navigate('/sign-in')}>

@@ -1,6 +1,7 @@
-import { YStack, Text } from 'tamagui'
+import { YStack, XStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
 import { LabeledInput, PrimaryButton, ScreenContent, MutedText } from '../../components/shared'
+import { ArrowLeft } from 'lucide-react'
 
 export function ResetPassword() {
   const navigate = useNavigate()
@@ -11,16 +12,14 @@ export function ResetPassword() {
         <MutedText size={14}>Enter your new password below.</MutedText>
       </YStack>
       <YStack gap={16} marginTop={24}>
-        <LabeledInput label="New Password" placeholder="Enter new password" />
-        <LabeledInput label="Confirm Password" placeholder="Confirm new password" />
+        <LabeledInput label="New Password" placeholder="••••••••" />
+        <LabeledInput label="Confirm Password" placeholder="••••••••" />
         <PrimaryButton label="Reset Password" onPress={() => navigate('/sign-in')} />
       </YStack>
-      <YStack flex={1} />
-      <YStack alignItems="center" paddingBottom={40}>
-        <Text fontSize={14} color="#8C8C8C" cursor="pointer" onPress={() => navigate('/sign-in')}>
-          &larr; Back to Sign In
-        </Text>
-      </YStack>
+      <XStack justifyContent="center" alignItems="center" gap={4} marginTop={32} cursor="pointer" onPress={() => navigate('/sign-in')}>
+        <ArrowLeft size={14} color="#8C8C8C" />
+        <Text fontSize={14} color="#8C8C8C">Back to Sign In</Text>
+      </XStack>
     </ScreenContent>
   )
 }

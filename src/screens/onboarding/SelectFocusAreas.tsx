@@ -3,6 +3,7 @@ import { YStack, XStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
 import { NavBar } from '../../components/NavBar'
 import { PrimaryButton, OutlineButton, Chip, ScreenContent, MutedText } from '../../components/shared'
+import { Plus } from 'lucide-react'
 import { FOCUS_AREA_PRESETS } from '../../data/fakeData'
 
 export function SelectFocusAreas() {
@@ -28,9 +29,10 @@ export function SelectFocusAreas() {
             <Chip key={area} label={area} selected={selected.includes(area)} onPress={() => toggle(area)} />
           ))}
         </XStack>
-        <Text fontSize={14} color="#8C8C8C" marginTop={8} cursor="pointer">
-          + Add Custom Focus Area
-        </Text>
+        <XStack gap={4} alignItems="center" marginTop={8} cursor="pointer" onPress={() => navigate('/shared/edit-focus-area')}>
+          <Plus size={14} color="#8C8C8C" />
+          <Text fontSize={14} color="#8C8C8C">Add Custom Focus Area</Text>
+        </XStack>
         <YStack flex={1} />
         <YStack gap={12}>
           <PrimaryButton label="Continue" onPress={() => navigate('/onboarding/baseline-ratings')} />

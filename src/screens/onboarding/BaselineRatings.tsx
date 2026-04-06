@@ -7,6 +7,7 @@ import { PrimaryButton, OutlineButton, ScreenContent, MutedText } from '../../co
 const AREAS = ['Communication', 'Quality Time']
 
 function Slider({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
+  const pct = ((value - 1) / 9) * 100
   return (
     <YStack gap={8}>
       <XStack justifyContent="space-between">
@@ -23,12 +24,10 @@ function Slider({ label, value, onChange }: { label: string; value: number; onCh
           width: '100%',
           height: 6,
           accentColor: '#1C1C1C',
+          background: `linear-gradient(to right, #1C1C1C ${pct}%, #D4D4D4 ${pct}%)`,
+          borderRadius: 3,
         }}
       />
-      <XStack justifyContent="space-between">
-        <MutedText>1</MutedText>
-        <MutedText>10</MutedText>
-      </XStack>
     </YStack>
   )
 }
@@ -36,7 +35,7 @@ function Slider({ label, value, onChange }: { label: string; value: number; onCh
 export function BaselineRatings() {
   const navigate = useNavigate()
   const [ratings, setRatings] = useState<Record<string, number>>(
-    Object.fromEntries(AREAS.map(a => [a, 5]))
+    Object.fromEntries(AREAS.map(a => [a, 7]))
   )
 
   return (
@@ -45,7 +44,7 @@ export function BaselineRatings() {
       <ScreenContent>
         <Text fontSize={22} fontWeight="700" color="#1C1C1C" textAlign="center">Rate Each Area</Text>
         <Text fontSize={14} color="#8C8C8C" textAlign="center">
-          How do you feel about each area right now? (1 = needs work, 10 = thriving)
+          {"How do you feel about each area right now?\n(1 = needs work, 10 = thriving)"}
         </Text>
         <YStack gap={20}>
           {AREAS.map(area => (

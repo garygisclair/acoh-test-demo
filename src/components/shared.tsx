@@ -1,6 +1,7 @@
 import { XStack, YStack, Text, Input, Separator } from 'tamagui'
 import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ArrowRight } from 'lucide-react'
 
 // Reusable card wrapper
 export function WireCard({ children, onPress, padding = 16 }: { children: ReactNode; onPress?: () => void; padding?: number }) {
@@ -43,14 +44,10 @@ export function SectionHeader({ title, linkText, linkTo }: { title: string; link
     <XStack justifyContent="space-between" alignItems="center" paddingHorizontal={24} paddingVertical={8}>
       <Text fontSize={16} fontWeight="600" color="#1C1C1C">{title}</Text>
       {linkText && linkTo && (
-        <Text
-          fontSize={13}
-          color="#8C8C8C"
-          cursor="pointer"
-          onPress={() => navigate(linkTo)}
-        >
-          {linkText}
-        </Text>
+        <XStack gap={4} alignItems="center" cursor="pointer" onPress={() => navigate(linkTo)}>
+          <Text fontSize={13} color="#8C8C8C">{linkText.replace(' →', '').replace(' &rarr;', '')}</Text>
+          <ArrowRight size={13} color="#8C8C8C" />
+        </XStack>
       )}
     </XStack>
   )
@@ -121,7 +118,7 @@ export function Chip({ label, selected, onPress, icon }: { label: string; select
       backgroundColor={selected ? '#1C1C1C' : '#FFFFFF'}
       borderRadius={20}
       paddingHorizontal={16}
-      paddingVertical={10}
+      paddingVertical={6}
       gap={6}
       alignItems="center"
       cursor="pointer"
@@ -141,7 +138,7 @@ export function Chip({ label, selected, onPress, icon }: { label: string; select
 export function ProgressBar({ value, max = 100 }: { value: number; max?: number }) {
   const pct = Math.min(100, Math.max(0, (value / max) * 100))
   return (
-    <XStack height={6} backgroundColor="#D4D4D4" borderRadius={3} overflow="hidden" flex={1}>
+    <XStack height={6} backgroundColor="#D4D4D4" borderRadius={3} overflow="hidden" width="100%">
       <XStack height={6} backgroundColor="#1C1C1C" borderRadius={3} width={`${pct}%` as any} />
     </XStack>
   )
@@ -150,7 +147,7 @@ export function ProgressBar({ value, max = 100 }: { value: number; max?: number 
 // Scroll wrapper for screen content
 export function ScreenContent({ children, padding = 24 }: { children: ReactNode; padding?: number }) {
   return (
-    <YStack padding={padding} paddingBottom={32} gap={16} flex={1}>
+    <YStack padding={padding} paddingBottom={32} gap={16}>
       {children}
     </YStack>
   )

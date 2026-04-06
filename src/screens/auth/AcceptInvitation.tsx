@@ -13,7 +13,7 @@ export function AcceptInvitation() {
       </YStack>
       <BorderCard>
         <YStack alignItems="center" gap={12} padding={8}>
-          <Avatar letter={PARTNER.avatar} size={64} />
+          <Avatar letter={PARTNER.avatar} size={60} />
           <Text fontSize={18} fontWeight="600" color="#1C1C1C">{PARTNER.name}</Text>
           <MutedText>{PARTNER.email}</MutedText>
 </YStack>

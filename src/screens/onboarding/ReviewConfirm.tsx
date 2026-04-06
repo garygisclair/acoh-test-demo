@@ -53,7 +53,7 @@ export function ReviewConfirm() {
         <YStack flex={1} />
         <YStack gap={12}>
           <PrimaryButton label="Confirm Setup" onPress={() => navigate('/home')} />
-          <OutlineButton label="Edit Setup" />
+          <OutlineButton label="Edit Setup" onPress={() => navigate('/onboarding/select-focus-areas')} />
         </YStack>
       </ScreenContent>
     </YStack>

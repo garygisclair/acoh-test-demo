@@ -20,7 +20,7 @@ export const FOCUS_AREAS = [
 
 export const HABITS = [
   { id: 1, name: '10-min check-in', focusArea: 'Communication', frequency: 'Daily', type: 'Shared', completed: true, streak: 12 },
-  { id: 2, name: 'Express gratitude', focusArea: 'Communication', frequency: 'Daily', type: 'Personal', completed: false, streak: 5 },
+  { id: 2, name: 'Express appreciation', focusArea: 'Communication', frequency: 'Daily', type: 'Personal', completed: false, streak: 5 },
   { id: 3, name: 'No-phone time together', focusArea: 'Quality Time', frequency: 'Daily', type: 'Shared', completed: false, streak: 8 },
   { id: 4, name: 'Date night planning', focusArea: 'Quality Time', frequency: 'Weekly', type: 'Shared', completed: true, streak: 20 },
   { id: 5, name: 'Exercise together', focusArea: 'Health & Energy', frequency: '3x/week', type: 'Shared', completed: false, streak: 3 },
@@ -32,10 +32,9 @@ export const HABITS = [
 export const TODAYS_HABITS = HABITS.filter(h => h.frequency === 'Daily')
 
 export const PARTNER_COMPLETIONS = [
-  { habitName: 'Daily check-in conversation', focusArea: 'Communication', completed: true },
-  { habitName: 'Active listening practice', focusArea: 'Communication', completed: true },
+  { habitName: '10-min check-in', focusArea: 'Communication', completed: true },
+  { habitName: 'Date night planning', focusArea: 'Quality Time', completed: false },
   { habitName: 'Put phones away at dinner', focusArea: 'Quality Time', completed: false },
-  { habitName: 'Morning walk together', focusArea: 'Health & Energy', completed: false },
   { habitName: 'Express appreciation', focusArea: 'Intimacy', completed: true },
 ]
 
@@ -44,13 +43,13 @@ export const SPARKS = [
   { id: 2, type: 'star', from: 'Alex', message: 'You crushed it this week!', time: '5 hours ago', habitName: null },
   { id: 3, type: 'thumbs-up', from: 'Alex', message: 'Love that you remembered!', time: 'Yesterday', habitName: 'Express appreciation' },
   { id: 4, type: 'heart', from: 'Alex', message: '', time: 'Yesterday', habitName: 'Put phones away at dinner' },
-  { id: 5, type: 'trophy', from: 'Alex', message: '12 day streak!', time: '2 days ago', habitName: 'Daily check-in conversation' },
+  { id: 5, type: 'target', from: 'Alex', message: '12 day streak!', time: '2 days ago', habitName: 'Daily check-in conversation' },
 ]
 
 export const APPROVALS = [
-  { id: 1, type: 'Add Shared Habit', title: 'Meditation together', from: 'Alex', note: 'I think this would help us both relax.', daysLeft: 5 },
-  { id: 2, type: 'Add Focus Area', title: 'Personal Growth', from: 'Alex', note: 'We should track our learning goals too.', daysLeft: 3 },
-  { id: 3, type: 'Edit Habit', title: 'Morning walk → Evening walk', from: 'Alex', note: 'Mornings are too rushed.', daysLeft: 6 },
+  { id: 1, title: 'Partner wants to add "Finances"', description: 'New focus area · Requires your approval', time: '2h ago', expires: '4d 22h' },
+  { id: 2, title: 'New shared habit proposed', description: '"Weekly budget review" · Finances', time: '5h ago', expires: '2d 3h' },
+  { id: 3, title: 'Priority change requested', description: 'Move "Communication" from #2 to #1', time: '1d ago', expires: '6d 1h' },
 ]
 
 export const GOALS = [

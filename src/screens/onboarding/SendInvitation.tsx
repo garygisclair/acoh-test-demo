@@ -6,7 +6,7 @@ export function SendInvitation() {
   const navigate = useNavigate()
   return (
     <ScreenContent>
-      <YStack alignItems="center" gap={8} marginTop={40}>
+      <YStack alignItems="center" gap={8}>
         <Text fontSize={24} fontWeight="700" color="#1C1C1C">Invite Your Partner</Text>
         <MutedText size={14}>Send an invitation to start building habits together.</MutedText>
       </YStack>

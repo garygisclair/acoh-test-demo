@@ -1,6 +1,6 @@
 import { YStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
-import { OutlineButton, ScreenContent, MutedText } from '../../components/shared'
+import { PrimaryButton, OutlineButton, ScreenContent, MutedText } from '../../components/shared'
 import { Loader } from 'lucide-react'
 
 export function WaitingForPartner() {
@@ -11,7 +11,6 @@ export function WaitingForPartner() {
         <Loader size={48} color="#8C8C8C" />
         <Text fontSize={22} fontWeight="700" color="#1C1C1C">Waiting for Partner</Text>
         <MutedText size={14}>{"We sent an invitation to\npartner@example.com"}</MutedText>
-        <MutedText size={14}>You'll be notified when they join.</MutedText>
       </YStack>
       <YStack gap={12} marginTop={40}>
         <OutlineButton label="Resend Invitation" />
@@ -26,6 +25,9 @@ export function WaitingForPartner() {
         >
           Cancel Invitation
         </Text>
+      </YStack>
+      <YStack marginTop={40}>
+        <PrimaryButton label="Partner Accepted — Continue" onPress={() => navigate('/onboarding/select-focus-areas')} />
       </YStack>
     </ScreenContent>
   )

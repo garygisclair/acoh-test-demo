@@ -98,7 +98,7 @@ export function PhoneFrame() {
         <StatusBar />
         {/* Scrollable content area */}
         <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', WebkitOverflowScrolling: 'touch' }}>
+          <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', WebkitOverflowScrolling: 'touch', paddingBottom: 24 }}>
             <AnimatedOutlet>
               <Outlet />
             </AnimatedOutlet>
