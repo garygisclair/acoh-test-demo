@@ -1,30 +1,111 @@
 import { YStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
-import { PrimaryButton, OutlineButton, ScreenContent, Avatar, MutedText, BorderCard } from '../../components/shared'
+import {
+  AuthShell,
+  AuthHeader,
+  PrimaryPillButton,
+  OutlinePillButton,
+} from '../../components/auth-ui'
 import { PARTNER } from '../../data/fakeData'
+import { LOVEBIRDS, PARTNER_AVATAR } from '../../assets/auth'
 
 export function AcceptInvitation() {
   const navigate = useNavigate()
+
   return (
-    <ScreenContent>
-      <YStack alignItems="center" gap={8} marginTop={40}>
-        <Text fontSize={24} fontWeight="700" color="#1C1C1C">You're Invited!</Text>
-        <MutedText size={14}>Your partner wants to build better habits together.</MutedText>
+    <AuthShell>
+      {/* Lovebirds illustration */}
+      <YStack
+        marginTop={44}
+        paddingTop={24}
+        height={140}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <img
+          src={LOVEBIRDS}
+          alt=""
+          style={{ width: 218, height: 106, display: 'block' }}
+        />
       </YStack>
-      <BorderCard>
-        <YStack alignItems="center" gap={12} padding={8}>
-          <Avatar letter={PARTNER.avatar} size={60} />
-          <Text fontSize={18} fontWeight="600" color="#1C1C1C">{PARTNER.name}</Text>
-          <MutedText>{PARTNER.email}</MutedText>
-</YStack>
-      </BorderCard>
-      <YStack gap={12} marginTop={16}>
-        <PrimaryButton label="Accept & Join" onPress={() => navigate('/onboarding/select-focus-areas')} />
-        <OutlineButton label="Decline" onPress={() => navigate('/welcome')} />
+
+      <YStack paddingTop={8}>
+        <AuthHeader
+          title="You're Invited!"
+          subtitle="Your partner wants to build better habits together."
+        />
       </YStack>
-      <YStack alignItems="center">
-        <MutedText size={13}>You'll need to create an account or sign in to accept this invitation.</MutedText>
+
+      {/* Partner card */}
+      <YStack paddingHorizontal={24} paddingVertical={16} alignItems="center">
+        <YStack
+          width="100%"
+          padding={24}
+          gap={8}
+          alignItems="center"
+          backgroundColor="#FFFFFF"
+          borderRadius={16}
+          borderWidth={1}
+          borderColor="var(--acoh-border)"
+        >
+          <img
+            src={PARTNER_AVATAR}
+            alt=""
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 50,
+              objectFit: 'cover',
+              display: 'block',
+            }}
+          />
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={18}
+            fontWeight="600"
+            color="var(--acoh-foreground)"
+          >
+            {PARTNER.name}
+          </Text>
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={13}
+            color="var(--acoh-muted)"
+          >
+            {PARTNER.email}
+          </Text>
+        </YStack>
       </YStack>
-    </ScreenContent>
+
+      {/* CTAs */}
+      <YStack paddingHorizontal={24} paddingTop={12} gap={12}>
+        <PrimaryPillButton
+          label="Accept & Join"
+          onPress={() => navigate('/onboarding/select-focus-areas')}
+        />
+        <OutlinePillButton label="Decline" onPress={() => navigate('/welcome')} />
+      </YStack>
+
+      {/* Footnote */}
+      <YStack paddingHorizontal={24} paddingTop={12}>
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={12}
+          color="var(--acoh-muted)"
+          textAlign="center"
+          lineHeight={18}
+        >
+          You'll need to{' '}
+          <span style={{ fontWeight: 700, color: 'var(--acoh-foreground)' }}>
+            create an account
+          </span>{' '}
+          or{' '}
+          <span style={{ fontWeight: 700, color: 'var(--acoh-foreground)' }}>
+            sign in
+          </span>
+          {' '}to accept this invitation.
+        </Text>
+      </YStack>
+    </AuthShell>
   )
 }

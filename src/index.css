@@ -1,4 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Hi-fi design tokens (A Couple of Habits) */
+  --acoh-primary: #e84d8a;
+  --acoh-primary-hover: #d2427a;
+  --acoh-accent: #6b6ee5;
+  --acoh-splash-top: #3b3d7f;
+  --acoh-splash-mid: #5355b2;
+  --acoh-splash-bot: #6b6ee5;
+  --acoh-bg-pale: #f3f3fb;
+  --acoh-ring: #e8e5f5;
+  --acoh-foreground: #2c2e2a;
+  --acoh-body: #666961;
+  --acoh-muted: #73756e;
+  --acoh-border: rgba(44, 46, 42, 0.15);
+  --acoh-card: #ffffff;
+}
 
 * {
   margin: 0;
@@ -7,12 +24,28 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #E8E8E8;
   overflow: hidden;
   height: 100vh;
+}
+
+/* Kill browser default focus ring + autofill blue/yellow tint */
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+  -webkit-text-fill-color: var(--acoh-foreground) !important;
+  transition: background-color 9999s ease-in-out 0s;
+  caret-color: var(--acoh-foreground);
 }
 
 /* Style native range inputs to match wireframe */

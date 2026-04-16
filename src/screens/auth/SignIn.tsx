@@ -1,61 +1,89 @@
-import { YStack, XStack, Text, Separator } from 'tamagui'
+import { YStack, XStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
-import { LabeledInput, PrimaryButton, ScreenContent, MutedText } from '../../components/shared'
-
-function SocialButton({ label, onPress }: { label: string; onPress?: () => void }) {
-  return (
-    <XStack
-      height={44}
-      borderRadius={9}
-      backgroundColor="#FFFFFF"
-      borderWidth={1}
-      borderColor="#D4D4D4"
-      alignItems="center"
-      justifyContent="center"
-      gap={10}
-      cursor="pointer"
-      onPress={onPress}
-      pressStyle={{ scale: 0.97, opacity: 0.85 }}
-    >
-      <XStack width={20} height={20} borderRadius={4} backgroundColor="#D4D4D4" />
-      <Text fontSize={14} fontWeight="600" color="#1C1C1C">{label}</Text>
-    </XStack>
-  )
-}
+import {
+  AuthShell,
+  AuthNavRow,
+  AuthHeader,
+  PillInput,
+  PrimaryPillButton,
+  OrSeparator,
+  SocialButton,
+  AuthFooterLink,
+} from '../../components/auth-ui'
+import { CROWN, SIGNIN_AVATAR } from '../../assets/auth'
 
 export function SignIn() {
   const navigate = useNavigate()
+
   return (
-    <ScreenContent>
-      <Text fontSize={24} fontWeight="700" color="#1C1C1C">Welcome Back</Text>
-      <MutedText size={14}>Sign in to continue</MutedText>
-      <YStack gap={16} marginTop={8}>
-        <LabeledInput label="Email" placeholder="email@example.com" />
-        <LabeledInput label="Password" placeholder="••••••••" />
+    <AuthShell>
+      <AuthNavRow onBack={() => navigate(-1)} />
+
+      {/* Crown + circular avatar */}
+      <YStack alignItems="center" justifyContent="center" gap={12} paddingBottom={8}>
+        <img
+          src={CROWN}
+          alt=""
+          style={{ width: 44, height: 40, display: 'block', transform: 'scaleY(-1)' }}
+        />
+        <img
+          src={SIGNIN_AVATAR}
+          alt=""
+          style={{
+            width: 100,
+            height: 100,
+            borderRadius: 50,
+            objectFit: 'cover',
+            display: 'block',
+          }}
+        />
       </YStack>
-      <XStack justifyContent="center" marginTop={8}>
-        <Text fontSize={13} color="#8C8C8C" cursor="pointer" onPress={() => navigate('/forgot-password')}>
-          Forgot Password?
-        </Text>
-      </XStack>
-      <YStack marginTop={16}>
-        <PrimaryButton label="Sign In" onPress={() => navigate('/home')} />
+
+      <YStack paddingTop={24}>
+        <AuthHeader title="Welcome Back" subtitle="Sign in to continue" />
       </YStack>
-      <YStack gap={16} marginTop={24}>
-        <XStack alignItems="center" gap={0}>
-          <Separator flex={1} />
-          <Text fontSize={13} color="#8C8C8C" paddingHorizontal={12}>or</Text>
-          <Separator flex={1} />
-        </XStack>
-        <SocialButton label="Continue with Google" />
-        <SocialButton label="Continue with Apple" />
-        <XStack justifyContent="center" gap={4}>
-          <MutedText size={14}>Don't have an account?</MutedText>
-          <Text fontSize={14} fontWeight="600" color="#1C1C1C" cursor="pointer" onPress={() => navigate('/sign-up')}>
-            Sign Up
+
+      {/* Form */}
+      <YStack paddingHorizontal={24} gap={14} paddingVertical={4}>
+        <PillInput label="Email" placeholder="email@example.com" type="email" />
+        <PillInput label="Password" placeholder="••••••••" type="password" />
+        <XStack width="100%" justifyContent="flex-end">
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={13}
+            fontWeight="500"
+            color="var(--acoh-accent)"
+            cursor="pointer"
+            onPress={() => navigate('/forgot-password')}
+          >
+            Forgot Password?
           </Text>
         </XStack>
       </YStack>
-    </ScreenContent>
+
+      {/* CTA */}
+      <YStack paddingHorizontal={24} paddingTop={16}>
+        <PrimaryPillButton label="Sign In" onPress={() => navigate('/home')} />
+      </YStack>
+
+      {/* Separator + social */}
+      <YStack paddingHorizontal={24} paddingVertical={4}>
+        <OrSeparator />
+      </YStack>
+
+      <YStack paddingHorizontal={24} gap={12}>
+        <SocialButton provider="google" label="Continue with Google" />
+        <SocialButton provider="apple" label="Continue with Apple" />
+      </YStack>
+
+      {/* Footer link */}
+      <YStack paddingHorizontal={24} paddingTop={16} paddingBottom={24}>
+        <AuthFooterLink
+          prefix="Don't have an account?"
+          linkLabel="Sign Up"
+          onPress={() => navigate('/sign-up')}
+        />
+      </YStack>
+    </AuthShell>
   )
 }

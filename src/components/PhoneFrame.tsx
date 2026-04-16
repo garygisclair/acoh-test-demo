@@ -3,22 +3,30 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { StatusBar } from './StatusBar'
 import { TabBar } from './TabBar'
 import { AnimatedOutlet } from './AnimatedRoutes'
+import { BottomSheetProvider } from './BottomSheet'
+import { ToastProvider } from './Toast'
 
-const AUTH_ROUTES = ['/welcome', '/sign-up', '/sign-in', '/forgot-password', '/reset-password', '/accept-invitation']
+const AUTH_ROUTES = ['/welcome', '/intro', '/sign-up', '/sign-in', '/forgot-password', '/reset-password', '/accept-invitation']
+const LIGHT_STATUS_ROUTES = ['/welcome']
+const TRANSPARENT_STATUS_ROUTES = ['/intro', '/sign-up', '/sign-in', '/forgot-password', '/reset-password', '/accept-invitation', '/onboarding/add-photo', '/onboarding/send-invitation', '/onboarding/invitation-sent', '/onboarding/partnership-confirmed', '/onboarding/select-focus-areas', '/onboarding/baseline-ratings', '/onboarding/review', '/onboarding/do-this-later', '/onboarding/setup-pending']
 const ONBOARDING_ROUTES = ['/onboarding']
 
 // Screen count for label
 const SCREEN_NAMES: Record<string, { label: string; index: number }> = {
-  '/welcome': { label: 'Welcome', index: 1 },
+  '/welcome': { label: 'Splash', index: 1 },
+  '/intro': { label: 'Welcome Carousel', index: 2 },
   '/sign-up': { label: 'Sign Up', index: 2 },
   '/sign-in': { label: 'Sign In', index: 3 },
   '/forgot-password': { label: 'Forgot Password', index: 4 },
   '/reset-password': { label: 'Reset Password', index: 5 },
   '/accept-invitation': { label: 'Accept Invitation', index: 6 },
+  '/onboarding/add-photo': { label: 'Add Profile Photo', index: 7 },
   '/onboarding/send-invitation': { label: 'Send Invitation', index: 7 },
+  '/onboarding/invitation-sent': { label: 'Invitation Sent', index: 8 },
+  '/onboarding/partnership-confirmed': { label: 'Partnership Confirmed', index: 9 },
   '/onboarding/waiting': { label: 'Waiting for Partner', index: 8 },
-  '/onboarding/select-focus-areas': { label: 'Select Focus Areas', index: 9 },
-  '/onboarding/baseline-ratings': { label: 'Baseline Ratings', index: 10 },
+  '/onboarding/select-focus-areas': { label: 'Suggested Focus Areas', index: 10 },
+  '/onboarding/baseline-ratings': { label: 'Rate Each Focus Area', index: 9 },
   '/onboarding/initial-goals': { label: 'Initial Goals', index: 11 },
   '/onboarding/review': { label: 'Review & Confirm', index: 12 },
   '/onboarding/do-this-later': { label: 'Do This Later', index: 13 },
@@ -71,6 +79,14 @@ export function PhoneFrame() {
   const isOnboarding = ONBOARDING_ROUTES.some(r => location.pathname.startsWith(r))
   const isNotifications = location.pathname.startsWith('/notifications')
   const showTabBar = !isAuth && !isOnboarding
+  const statusVariant: 'light' | 'dark' | 'transparent' = LIGHT_STATUS_ROUTES.includes(location.pathname)
+    ? 'light'
+    : TRANSPARENT_STATUS_ROUTES.includes(location.pathname)
+      ? 'transparent'
+      : 'dark'
+  const statusIsOverlay = statusVariant !== 'dark'
+  // Use pale lavender phone bg for hi-fi screens so rounded corners don't show white
+  const phoneBg = statusIsOverlay ? '#f3f3fb' : '#FFFFFF'
 
   const screenInfo = getScreenInfo(location.pathname)
 
@@ -86,7 +102,8 @@ export function PhoneFrame() {
       <YStack
         width={390}
         height={844}
-        backgroundColor="#FFFFFF"
+        position="relative"
+        backgroundColor={phoneBg}
         borderRadius={44}
         overflow="hidden"
         borderWidth={3}
@@ -95,19 +112,30 @@ export function PhoneFrame() {
           boxShadow: '0 25px 60px rgba(0,0,0,0.15), 0 10px 20px rgba(0,0,0,0.08)',
         }}
       >
-        <StatusBar />
-        {/* Scrollable content area */}
-        <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', WebkitOverflowScrolling: 'touch', paddingBottom: 24 }}>
-            <AnimatedOutlet>
-              <Outlet />
-            </AnimatedOutlet>
+        <BottomSheetProvider>
+         <ToastProvider>
+          {/* For overlay variants, status bar floats over content so backgrounds extend edge-to-edge */}
+          {statusIsOverlay ? (
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }}>
+              <StatusBar variant={statusVariant} />
+            </div>
+          ) : (
+            <StatusBar variant="dark" />
+          )}
+          {/* Scrollable content area */}
+          <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', WebkitOverflowScrolling: 'touch', paddingBottom: statusIsOverlay ? 0 : 24 }}>
+              <AnimatedOutlet>
+                <Outlet />
+              </AnimatedOutlet>
+            </div>
           </div>
-        </div>
-        {/* Tab bar */}
-        {showTabBar && (
-          <TabBar activeTab={isNotifications ? null : undefined} />
-        )}
+          {/* Tab bar */}
+          {showTabBar && (
+            <TabBar activeTab={isNotifications ? null : undefined} />
+          )}
+         </ToastProvider>
+        </BottomSheetProvider>
       </YStack>
       {/* Screen label */}
       <XStack marginTop={12} gap={8} alignItems="center">

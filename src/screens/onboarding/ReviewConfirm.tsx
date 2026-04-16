@@ -1,61 +1,158 @@
 import { YStack, XStack, Text } from 'tamagui'
-import { useNavigate } from 'react-router-dom'
-import { NavBar } from '../../components/NavBar'
-import { PrimaryButton, OutlineButton, ScreenContent, MutedText, BorderCard } from '../../components/shared'
-import { CheckCircle, Clock } from 'lucide-react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { PiggyBank, Blend, Baby } from 'lucide-react'
+import {
+  AuthShell,
+  BackButton,
+  PrimaryPillButton,
+  OutlinePillButton,
+} from '../../components/auth-ui'
+
+const FOCUS_AREAS = [
+  { label: 'Finances', baseline: 4, Icon: PiggyBank },
+  { label: 'Intimacy', baseline: 5, Icon: Blend },
+  { label: 'Parenting', baseline: 5, Icon: Baby },
+]
 
 export function ReviewConfirm() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const skipped = (location.state as { skipped?: boolean } | null)?.skipped === true
+
   return (
-    <YStack flex={1}>
-      <NavBar title="Review" onBack={() => navigate('/onboarding/initial-goals')} />
-      <ScreenContent>
-        <Text fontSize={22} fontWeight="700" color="#1C1C1C" textAlign="center">Review Setup</Text>
-        <MutedText size={14}>
-          <Text fontSize={14} color="#8C8C8C" textAlign="center">Both partners need to confirm before the app unlocks.</Text>
-        </MutedText>
+    <AuthShell>
+      {/* NavBar — BackButton + centered title + spacer to balance */}
+      <XStack
+        marginTop={44}
+        height={48}
+        paddingHorizontal={16}
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <BackButton onPress={() => navigate(-1)} />
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={16}
+          fontWeight="600"
+          color="var(--acoh-foreground)"
+        >
+          Review (3/3)
+        </Text>
+        <YStack width={36} />
+      </XStack>
 
-        <BorderCard>
-          <YStack gap={8}>
-            <Text fontSize={14} fontWeight="600" color="#1C1C1C">Focus Areas</Text>
-            <YStack gap={4}>
-              <Text fontSize={14} color="#1C1C1C">Communication — Baseline: 7</Text>
-              <Text fontSize={14} color="#1C1C1C">Quality Time — Baseline: 7</Text>
+      {/* Content */}
+      <YStack padding={24} gap={16} alignItems="center">
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={14}
+          color="var(--acoh-body)"
+          textAlign="center"
+          width="100%"
+        >
+          Review your selections before continuing.
+        </Text>
+
+        <YStack height={4} />
+
+        {/* Focus Areas summary card */}
+        <YStack
+          width="100%"
+          padding={16}
+          borderRadius={12}
+          backgroundColor="#ebebf9"
+          gap={8}
+        >
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={14}
+            fontWeight="700"
+            color="var(--acoh-foreground)"
+          >
+            Focus Areas
+          </Text>
+          {skipped ? (
+            <Text
+              fontFamily="Outfit, sans-serif"
+              fontSize={14}
+              color="var(--acoh-body)"
+            >
+              Skipped
+            </Text>
+          ) : (
+            <YStack gap={0} width="100%">
+              {FOCUS_AREAS.map((fa) => (
+                <XStack
+                  key={fa.label}
+                  width="100%"
+                  height={24}
+                  gap={8}
+                  alignItems="center"
+                >
+                  <fa.Icon size={18} color="var(--acoh-accent)" strokeWidth={2} />
+                  <Text
+                    flex={1}
+                    fontFamily="Outfit, sans-serif"
+                    fontSize={14}
+                    color="var(--acoh-body)"
+                  >
+                    {fa.label}
+                  </Text>
+                  <Text
+                    fontFamily="Outfit, sans-serif"
+                    fontSize={14}
+                    color="var(--acoh-body)"
+                  >
+                    {fa.baseline}
+                  </Text>
+                </XStack>
+              ))}
             </YStack>
-          </YStack>
-        </BorderCard>
-
-        <BorderCard>
-          <YStack gap={8}>
-            <Text fontSize={14} fontWeight="600" color="#1C1C1C">Habits Added</Text>
-            <YStack gap={4}>
-              <Text fontSize={14} color="#1C1C1C">10-min check-in · Daily</Text>
-              <Text fontSize={14} color="#1C1C1C">Express appreciation · Daily</Text>
-              <Text fontSize={14} color="#1C1C1C">Date night · Weekly</Text>
-            </YStack>
-          </YStack>
-        </BorderCard>
-
-        <BorderCard>
-          <YStack gap={12}>
-            <Text fontSize={14} fontWeight="600" color="#1C1C1C">Confirmation</Text>
-            <XStack gap={8} alignItems="center">
-              <CheckCircle size={16} color="#1C1C1C" />
-              <Text fontSize={14} color="#1C1C1C">You — Confirmed</Text>
-            </XStack>
-            <XStack gap={8} alignItems="center">
-              <Clock size={16} color="#8C8C8C" />
-              <Text fontSize={14} color="#8C8C8C">Partner — Waiting...</Text>
-            </XStack>
-          </YStack>
-        </BorderCard>
-
-        <YStack flex={1} />
-        <YStack gap={12}>
-          <PrimaryButton label="Confirm Setup" onPress={() => navigate('/home')} />
-          <OutlineButton label="Edit Setup" onPress={() => navigate('/onboarding/select-focus-areas')} />
+          )}
         </YStack>
-      </ScreenContent>
-    </YStack>
+
+        {/* Confirmation status card */}
+        <YStack
+          width="100%"
+          padding={16}
+          borderRadius={12}
+          backgroundColor="#ebebf9"
+          gap={10}
+        >
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={14}
+            fontWeight="700"
+            color="var(--acoh-foreground)"
+          >
+            Confirmation
+          </Text>
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={14}
+            fontWeight="600"
+            color="var(--acoh-body)"
+          >
+            ✓{'  '}You — Confirmed
+          </Text>
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={14}
+            fontWeight="600"
+            color="var(--acoh-body)"
+          >
+            ○{'  '}Partner — Waiting
+          </Text>
+        </YStack>
+
+        <YStack height={8} />
+
+        <PrimaryPillButton label="Complete Setup" onPress={() => navigate('/home')} />
+        <OutlinePillButton
+          label="Edit Setup"
+          onPress={() => navigate('/onboarding/baseline-ratings')}
+        />
+      </YStack>
+    </AuthShell>
   )
 }

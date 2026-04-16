@@ -3,6 +3,7 @@ import { PhoneFrame } from './components/PhoneFrame'
 
 // Auth
 import { Welcome } from './screens/auth/Welcome'
+import { Intro } from './screens/auth/Intro'
 import { SignUp } from './screens/auth/SignUp'
 import { SignIn } from './screens/auth/SignIn'
 import { ForgotPassword } from './screens/auth/ForgotPassword'
@@ -10,7 +11,10 @@ import { ResetPassword } from './screens/auth/ResetPassword'
 import { AcceptInvitation } from './screens/auth/AcceptInvitation'
 
 // Onboarding
+import { AddProfilePhoto } from './screens/onboarding/AddProfilePhoto'
 import { SendInvitation } from './screens/onboarding/SendInvitation'
+import { InvitationSent } from './screens/onboarding/InvitationSent'
+import { PartnershipConfirmed } from './screens/onboarding/PartnershipConfirmed'
 import { WaitingForPartner } from './screens/onboarding/WaitingForPartner'
 import { SelectFocusAreas } from './screens/onboarding/SelectFocusAreas'
 import { BaselineRatings } from './screens/onboarding/BaselineRatings'
@@ -69,6 +73,7 @@ export default function App() {
           {/* Auth */}
           <Route path="/" element={<Navigate to="/welcome" replace />} />
           <Route path="/welcome" element={<Welcome />} />
+          <Route path="/intro" element={<Intro />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -76,7 +81,10 @@ export default function App() {
           <Route path="/accept-invitation" element={<AcceptInvitation />} />
 
           {/* Onboarding */}
+          <Route path="/onboarding/add-photo" element={<AddProfilePhoto />} />
           <Route path="/onboarding/send-invitation" element={<SendInvitation />} />
+          <Route path="/onboarding/invitation-sent" element={<InvitationSent />} />
+          <Route path="/onboarding/partnership-confirmed" element={<PartnershipConfirmed />} />
           <Route path="/onboarding/waiting" element={<WaitingForPartner />} />
           <Route path="/onboarding/select-focus-areas" element={<SelectFocusAreas />} />
           <Route path="/onboarding/baseline-ratings" element={<BaselineRatings />} />

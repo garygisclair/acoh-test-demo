@@ -1,41 +1,133 @@
 import { YStack, XStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
-import { PrimaryButton, OutlineButton, ScreenContent, MutedText, BorderCard } from '../../components/shared'
-import { AlertCircle } from 'lucide-react'
+import {
+  AuthShell,
+  PrimaryPillButton,
+  OutlinePillButton,
+} from '../../components/auth-ui'
+import { STARBURST_OUTER, STARBURST_EXCLAIM } from '../../assets/onboarding'
+
+function StarburstIcon() {
+  return (
+    <div
+      style={{
+        position: 'relative',
+        width: 69.88,
+        height: 57.97,
+        transform: 'scaleY(-1)',
+      }}
+    >
+      <img
+        src={STARBURST_OUTER}
+        alt=""
+        aria-hidden="true"
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+      />
+      <img
+        src={STARBURST_EXCLAIM}
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          left: 31.15,
+          top: 15.09,
+          width: 7.79,
+          height: 27.69,
+        }}
+      />
+    </div>
+  )
+}
 
 export function SetupPendingGate() {
   const navigate = useNavigate()
+
   return (
-    <ScreenContent>
-      <YStack alignItems="center" gap={16} marginTop={80}>
-        <AlertCircle size={48} color="#8C8C8C" />
-        <Text fontSize={20} fontWeight="700" color="#1C1C1C" textAlign="center">
-          Setup Not Complete
+    <AuthShell>
+      <YStack
+        flex={1}
+        paddingTop={174}
+        paddingBottom={24}
+        paddingHorizontal={32}
+        gap={16}
+        alignItems="center"
+      >
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={22}
+          fontWeight="700"
+          color="var(--acoh-foreground)"
+          textAlign="center"
+        >
+          Setup Incomplete
         </Text>
-        <MutedText size={14}>
-          You and your partner need to complete the initial setup before accessing the app.
-        </MutedText>
-        <MutedText size={14}>
-          Complete the setup to unlock all features.
-        </MutedText>
-      </YStack>
-      <BorderCard>
-        <YStack gap={12}>
-          <XStack justifyContent="space-between" alignItems="center">
-            <Text fontSize={14} color="#1C1C1C">You</Text>
-            <MutedText size={13}>Not started</MutedText>
+
+        <StarburstIcon />
+
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={14}
+          color="var(--acoh-body)"
+          textAlign="center"
+          lineHeight={20}
+        >
+          You and your partner need to complete the{'\n'}initial setup before you can start using{'\n'}the app together.
+        </Text>
+
+        {/* Partner status card */}
+        <YStack
+          width="100%"
+          paddingHorizontal={16}
+          paddingVertical={14}
+          borderRadius={12}
+          backgroundColor="#ebebf9"
+          gap={8}
+        >
+          <XStack width="100%" justifyContent="space-between" alignItems="center">
+            <Text
+              fontFamily="Outfit, sans-serif"
+              fontSize={14}
+              color="var(--acoh-body)"
+            >
+              You
+            </Text>
+            <Text
+              fontFamily="Outfit, sans-serif"
+              fontSize={13}
+              fontWeight="600"
+              color="var(--acoh-body)"
+            >
+              Not started
+            </Text>
           </XStack>
-          <XStack justifyContent="space-between" alignItems="center">
-            <Text fontSize={14} color="#1C1C1C">Partner</Text>
-            <MutedText size={13}>Not started</MutedText>
+          <XStack width="100%" justifyContent="space-between" alignItems="center">
+            <Text
+              fontFamily="Outfit, sans-serif"
+              fontSize={14}
+              color="var(--acoh-body)"
+            >
+              Partner
+            </Text>
+            <Text
+              fontFamily="Outfit, sans-serif"
+              fontSize={13}
+              fontWeight="600"
+              color="var(--acoh-body)"
+            >
+              Not started
+            </Text>
           </XStack>
         </YStack>
-      </BorderCard>
-      <YStack flex={1} />
-      <YStack gap={12} paddingBottom={40}>
-        <PrimaryButton label="Start Setup" onPress={() => navigate('/onboarding/select-focus-areas')} />
-        <OutlineButton label="Skip for Now" onPress={() => navigate('/onboarding/do-this-later')} />
+
+        <PrimaryPillButton
+          label="Start Setup"
+          onPress={() => navigate('/onboarding/baseline-ratings')}
+        />
+        <OutlinePillButton
+          label="Remind Me Later"
+          onPress={() => navigate('/home')}
+        />
       </YStack>
-    </ScreenContent>
+    </AuthShell>
   )
 }

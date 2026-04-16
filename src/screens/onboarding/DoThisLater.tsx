@@ -1,23 +1,102 @@
 import { YStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
-import { PrimaryButton, OutlineButton, ScreenContent, MutedText } from '../../components/shared'
-import { Bell } from 'lucide-react'
+import {
+  AuthShell,
+  PrimaryPillButton,
+  OutlinePillButton,
+} from '../../components/auth-ui'
+import { STARBURST_OUTER, STARBURST_EXCLAIM } from '../../assets/onboarding'
+
+function StarburstIcon() {
+  return (
+    <div
+      style={{
+        position: 'relative',
+        width: 69.88,
+        height: 57.97,
+        transform: 'scaleY(-1)',
+      }}
+    >
+      <img
+        src={STARBURST_OUTER}
+        alt=""
+        aria-hidden="true"
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+      />
+      <img
+        src={STARBURST_EXCLAIM}
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          left: 31.15,
+          top: 15.09,
+          width: 7.79,
+          height: 27.69,
+        }}
+      />
+    </div>
+  )
+}
 
 export function DoThisLater() {
   const navigate = useNavigate()
+
   return (
-    <ScreenContent>
-      <YStack alignItems="center" gap={16} marginTop={80}>
-        <Bell size={64} color="#8C8C8C" />
-        <Text fontSize={18} fontWeight="600" color="#1C1C1C">Setup Incomplete</Text>
-        <MutedText size={14}>You've paired with your partner but haven't completed the setup yet.</MutedText>
-        <MutedText size={14}>Complete setup to unlock all features.</MutedText>
+    <AuthShell>
+      <YStack
+        flex={1}
+        paddingTop={174}
+        paddingBottom={24}
+        paddingHorizontal={24}
+        gap={20}
+        alignItems="center"
+      >
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={22}
+          fontWeight="700"
+          color="var(--acoh-foreground)"
+          textAlign="center"
+        >
+          Setup Incomplete
+        </Text>
+
+        <StarburstIcon />
+
+        <YStack gap={0} alignItems="center">
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={14}
+            color="var(--acoh-body)"
+            textAlign="center"
+            lineHeight={20}
+          >
+            You've paired with your partner but{'\n'}haven't completed the setup yet.
+          </Text>
+          <YStack height={12} />
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={14}
+            color="var(--acoh-body)"
+            textAlign="center"
+            lineHeight={20}
+          >
+            Complete setup to unlock all features.
+          </Text>
+        </YStack>
+
+        <YStack height={16} />
+
+        <PrimaryPillButton
+          label="Start Setup"
+          onPress={() => navigate('/onboarding/baseline-ratings')}
+        />
+        <OutlinePillButton
+          label="Remind Me Later"
+          onPress={() => navigate('/home')}
+        />
       </YStack>
-      <YStack flex={1} />
-      <YStack gap={12} paddingBottom={40}>
-        <PrimaryButton label="Start Setup" onPress={() => navigate('/onboarding/select-focus-areas')} />
-        <OutlineButton label="Remind Me Later" />
-      </YStack>
-    </ScreenContent>
+    </AuthShell>
   )
 }
