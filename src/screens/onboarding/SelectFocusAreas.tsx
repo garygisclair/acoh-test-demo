@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { YStack, XStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
 import {
