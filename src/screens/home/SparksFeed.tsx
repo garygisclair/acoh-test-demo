@@ -1,71 +1,164 @@
 import { useState } from 'react'
 import { YStack, XStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
-import { NavBar } from '../../components/NavBar'
-import { ScreenContent, WireCard, MutedText, Chip, PrimaryButton } from '../../components/shared'
-import { SPARKS } from '../../data/fakeData'
-import { Flame, Star, ThumbsUp, Heart, Target, HandHeart, Handshake, Sparkles } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import {
+  Flame,
+  Star,
+  ThumbsUp,
+  Heart,
+  Target,
+  HandHeart,
+  Handshake,
+  Sparkles,
+  type LucideIcon,
+} from 'lucide-react'
+import { AuthShell } from '../../components/auth-ui'
+import { HomeNavBar } from '../../components/home-ui'
 
-const SPARK_ICONS: Record<string, LucideIcon> = {
-  flame: Flame,
-  star: Star,
-  'thumbs-up': ThumbsUp,
-  heart: Heart,
-  target: Target,
-  'hand-heart': HandHeart,
-  handshake: Handshake,
-  sparkles: Sparkles,
+type Tab = 'received' | 'sent'
+
+type SparkItem = {
+  id: number
+  icon: LucideIcon
+  sender: string
+  message: string
+  tiedTo: string
+  time: string
 }
 
-const SENT_SPARKS = [
-  { id: 101, type: 'heart', to: 'Alex', message: 'You made my day!', time: '3 hours ago', habitName: 'Express appreciation' },
-  { id: 102, type: 'sparkles', to: 'Alex', message: 'Proud of us this week', time: 'Yesterday', habitName: null },
-  { id: 103, type: 'flame', to: 'Alex', message: 'Keep it up!', time: '2 days ago', habitName: '10-min check-in' },
-  { id: 104, type: 'handshake', to: 'Alex', message: 'Great teamwork today', time: '3 days ago', habitName: 'No-phone time together' },
+const RECEIVED: SparkItem[] = [
+  { id: 1, icon: ThumbsUp, sender: 'Partner', message: 'Great job on the check-in!', tiedTo: 'Tied to: 10-min check-in', time: '2m ago' },
+  { id: 2, icon: HandHeart, sender: 'Partner', message: 'Love that you planned date night', tiedTo: 'Tied to: Date night planning', time: '1h ago' },
+  { id: 3, icon: Star, sender: 'Partner', message: 'Thank you for being consistent!', tiedTo: 'Tied to: Express gratitude', time: '3h ago' },
+  { id: 4, icon: Flame, sender: 'Partner', message: "You're on a 5-day streak!", tiedTo: 'Tied to: No-phone time', time: '1d ago' },
+  { id: 5, icon: Heart, sender: 'Partner', message: "We're doing great this week", tiedTo: 'General encouragement', time: '2d ago' },
+]
+
+const SENT: SparkItem[] = [
+  { id: 101, icon: Heart, sender: 'To Partner', message: 'You made my day!', tiedTo: 'Tied to: Express appreciation', time: '3h ago' },
+  { id: 102, icon: Sparkles, sender: 'To Partner', message: 'Proud of us this week', tiedTo: 'General encouragement', time: '1d ago' },
+  { id: 103, icon: Flame, sender: 'To Partner', message: 'Keep it up!', tiedTo: 'Tied to: 10-min check-in', time: '2d ago' },
+  { id: 104, icon: Handshake, sender: 'To Partner', message: 'Great teamwork today', tiedTo: 'Tied to: No-phone time together', time: '3d ago' },
+  { id: 105, icon: Target, sender: 'To Partner', message: 'Hitting our goals!', tiedTo: 'Tied to: Weekly check-in', time: '4d ago' },
 ]
 
 export function SparksFeed() {
   const navigate = useNavigate()
-  const [tab, setTab] = useState<'received' | 'sent'>('received')
-  const sparks = tab === 'received' ? SPARKS : SENT_SPARKS
+  const [tab, setTab] = useState<Tab>('received')
+  const items = tab === 'received' ? RECEIVED : SENT
 
   return (
-    <YStack flex={1}>
-      <NavBar title="Sparks" />
-      <ScreenContent>
+    <AuthShell>
+      <HomeNavBar title="Sparks" onBack={() => navigate(-1)} />
+
+      <YStack paddingHorizontal={16} paddingTop={16} paddingBottom={32} gap={12}>
+        {/* Filter pills */}
         <XStack gap={8}>
-          <Chip label="Received" selected={tab === 'received'} onPress={() => setTab('received')} />
-          <Chip label="Sent" selected={tab === 'sent'} onPress={() => setTab('sent')} />
+          <FilterPill label="Received" active={tab === 'received'} onPress={() => setTab('received')} />
+          <FilterPill label="Sent" active={tab === 'sent'} onPress={() => setTab('sent')} />
         </XStack>
-        <MutedText>{tab === 'received' ? 'Recent encouragement from your partner' : 'Sparks you sent to your partner'}</MutedText>
-        <YStack gap={12}>
-          {sparks.map(spark => {
-            const Icon = SPARK_ICONS[spark.type] || Sparkles
-            const label = tab === 'received' ? `From: ${(spark as any).from}` : `To: ${(spark as any).to}`
-            return (
-              <WireCard key={spark.id} onPress={() => navigate(`/shared/spark-detail/${spark.id}`)}>
-                <XStack gap={12} alignItems="flex-start">
-                  <Icon size={20} color="#1C1C1C" />
-                  <YStack flex={1} gap={4}>
-                    <XStack justifyContent="space-between">
-                      <Text fontSize={14} fontWeight="600" color="#1C1C1C">{label}</Text>
-                      <MutedText>{spark.time}</MutedText>
-                    </XStack>
-                    {spark.message ? (
-                      <Text fontSize={14} color="#1C1C1C">{spark.message}</Text>
-                    ) : null}
-                    {spark.habitName && (
-                      <MutedText>{spark.habitName}</MutedText>
-                    )}
-                  </YStack>
+
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={13}
+          color="var(--acoh-body)"
+          textAlign="center"
+          width="100%"
+        >
+          {tab === 'received'
+            ? 'Recent encouragement from your partner'
+            : 'Sparks you sent to your partner'}
+        </Text>
+
+        {items.map(item => {
+          const Icon = item.icon
+          return (
+            <XStack
+              key={item.id}
+              backgroundColor="#ebebf9"
+              borderRadius={12}
+              paddingHorizontal={16}
+              paddingVertical={14}
+              gap={12}
+              alignItems="flex-start"
+              cursor="pointer"
+              onPress={() => navigate(`/shared/spark-detail/${item.id}`)}
+              pressStyle={{ scale: 0.99, opacity: 0.95 }}
+            >
+              <Icon size={22} color="var(--acoh-foreground)" />
+              <YStack flex={1} gap={4}>
+                <XStack justifyContent="space-between" alignItems="center">
+                  <Text
+                    fontFamily="Outfit, sans-serif"
+                    fontSize={14}
+                    fontWeight="600"
+                    color="var(--acoh-foreground)"
+                  >
+                    {item.sender}
+                  </Text>
+                  <Text
+                    fontFamily="Outfit, sans-serif"
+                    fontSize={12}
+                    color="var(--acoh-muted)"
+                  >
+                    {item.time}
+                  </Text>
                 </XStack>
-              </WireCard>
-            )
-          })}
-        </YStack>
-        <PrimaryButton label="Send Spark" onPress={() => navigate('/shared/send-spark')} />
-      </ScreenContent>
-    </YStack>
+                <Text
+                  fontFamily="Outfit, sans-serif"
+                  fontSize={13}
+                  color="var(--acoh-body)"
+                >
+                  {item.message}
+                </Text>
+                <Text
+                  fontFamily="Outfit, sans-serif"
+                  fontSize={13}
+                  color="var(--acoh-body)"
+                >
+                  {item.tiedTo}
+                </Text>
+              </YStack>
+            </XStack>
+          )
+        })}
+      </YStack>
+    </AuthShell>
+  )
+}
+
+function FilterPill({
+  label,
+  active,
+  onPress,
+}: {
+  label: string
+  active: boolean
+  onPress: () => void
+}) {
+  return (
+    <XStack
+      flex={1}
+      height={36}
+      borderRadius={20}
+      alignItems="center"
+      justifyContent="center"
+      cursor="pointer"
+      onPress={onPress}
+      pressStyle={{ scale: 0.98, opacity: 0.92 }}
+      backgroundColor={active ? 'var(--acoh-primary)' : '#FFFFFF'}
+      style={{
+        border: active ? 'none' : '1px solid #d4d4d4',
+      }}
+    >
+      <Text
+        fontFamily="Outfit, sans-serif"
+        fontSize={13}
+        fontWeight={active ? '600' : '400'}
+        color={active ? '#FFFFFF' : 'var(--acoh-body)'}
+      >
+        {label}
+      </Text>
+    </XStack>
   )
 }

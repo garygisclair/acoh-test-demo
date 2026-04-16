@@ -1,109 +1,170 @@
 import { useState } from 'react'
-import { YStack, XStack, Text, Input } from 'tamagui'
+import { YStack, XStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
-import { NavBar } from '../../components/NavBar'
-import { ScreenContent, PrimaryButton, OutlineButton, BorderCard, MutedText } from '../../components/shared'
-import { Mic, CheckCircle } from 'lucide-react'
+import { Mic } from 'lucide-react'
+import { AuthShell, PrimaryPillButton } from '../../components/auth-ui'
+import { HomeNavBar } from '../../components/home-ui'
+import { useToast } from '../../components/Toast'
+
+const REQUEST_ROWS = [
+  { label: 'Request', value: 'Add Focus Area' },
+  { label: 'Area', value: 'Finances' },
+  { label: 'Requested by', value: 'Partner' },
+  { label: 'Expires in', value: '5 days' },
+]
 
 export function ApprovalReview() {
   const navigate = useNavigate()
+  const toast = useToast()
   const [reason, setReason] = useState('')
-  const [error, setError] = useState('')
-  const [toast, setToast] = useState(false)
+
+  const handleApprove = () => {
+    toast.show('You approved the request')
+    navigate('/home')
+  }
+
+  const handleDecline = () => {
+    toast.show('You declined the request')
+    navigate('/home')
+  }
 
   return (
-    <YStack flex={1}>
-      <NavBar title="Approval" />
-      <ScreenContent>
-        <MutedText>Your partner wants to make a change.</MutedText>
+    <AuthShell>
+      <HomeNavBar title="Approval" onBack={() => navigate(-1)} />
 
-        <BorderCard>
-          <YStack gap={8}>
-            <XStack justifyContent="space-between">
-              <MutedText>Request</MutedText>
-              <Text fontSize={14} fontWeight="600" color="#1C1C1C">Add Focus Area</Text>
-            </XStack>
-            <XStack justifyContent="space-between">
-              <MutedText>Area</MutedText>
-              <Text fontSize={14} fontWeight="600" color="#1C1C1C">Finances</Text>
-            </XStack>
-            <XStack justifyContent="space-between">
-              <MutedText>Requested by</MutedText>
-              <Text fontSize={14} color="#1C1C1C">Partner</Text>
-            </XStack>
-            <XStack justifyContent="space-between">
-              <MutedText>Expires in</MutedText>
-              <Text fontSize={14} color="#1C1C1C">5 days</Text>
-            </XStack>
-          </YStack>
-        </BorderCard>
+      <YStack paddingHorizontal={16} paddingTop={16} paddingBottom={32} gap={14}>
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={13}
+          color="var(--acoh-body)"
+          textAlign="center"
+          width="100%"
+        >
+          Your partner wants to make a change.
+        </Text>
 
-        <Text fontSize={16} fontWeight="700" color="#1C1C1C">Note from partner</Text>
-        <BorderCard>
-          <Text fontSize={14} color="#1C1C1C">"I think we should start tracking our spending together."</Text>
-        </BorderCard>
-
-        <YStack gap={12}>
-          {toast ? (
+        {/* Request info card */}
+        <YStack
+          backgroundColor="#ebebf9"
+          borderRadius={9}
+          padding={16}
+          gap={10}
+        >
+          {REQUEST_ROWS.map(row => (
             <XStack
-              height={44}
-              borderRadius={9}
-              backgroundColor="#1C1C1C"
+              key={row.label}
+              justifyContent="space-between"
               alignItems="center"
-              justifyContent="center"
-              gap={8}
             >
-              <CheckCircle size={16} color="#FFFFFF" />
-              <Text fontSize={14} fontWeight="600" color="#FFFFFF">You accepted Finances as a focus area</Text>
+              <Text
+                fontFamily="Outfit, sans-serif"
+                fontSize={14}
+                color="var(--acoh-body)"
+              >
+                {row.label}
+              </Text>
+              <Text
+                fontFamily="Outfit, sans-serif"
+                fontSize={14}
+                fontWeight="600"
+                color="var(--acoh-body)"
+              >
+                {row.value}
+              </Text>
             </XStack>
-          ) : (
-            <PrimaryButton label="Approve" onPress={() => {
-              setToast(true)
-              setTimeout(() => navigate('/home'), 1500)
-            }} />
-          )}
-          <OutlineButton label="Decline" onPress={() => {
-            if (!reason.trim()) {
-              setError('Must give a reason for declining.')
-            } else {
-              setError('')
-              navigate('/home')
-            }
-          }} />
+          ))}
         </YStack>
 
-        <YStack gap={6}>
-          <MutedText size={13}>Reason for declining (optional)</MutedText>
-          <XStack position="relative">
-            <Input
-              flex={1}
-              height={44}
-              borderRadius={9}
-              borderWidth={1}
-              borderColor={error ? '#C45C2C' : '#D4D4D4'}
-              paddingHorizontal={16}
-              paddingRight={44}
-              fontSize={14}
-              placeholder={'"I think we should focus on..."'}
-              placeholderTextColor={"#8C8C8C" as any}
+        <YStack height={4} />
+
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={16}
+          fontWeight="700"
+          color="var(--acoh-body)"
+        >
+          Note from partner
+        </Text>
+
+        <YStack
+          backgroundColor="#ebebf9"
+          borderRadius={9}
+          paddingHorizontal={16}
+          paddingVertical={12}
+        >
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={14}
+            color="var(--acoh-body)"
+          >
+            "I think we should start tracking our spending together."
+          </Text>
+        </YStack>
+
+        <YStack height={8} />
+
+        <PrimaryPillButton label="Approve" onPress={handleApprove} />
+
+        <XStack
+          height={48}
+          borderRadius={24}
+          backgroundColor="#FFFFFF"
+          alignItems="center"
+          justifyContent="center"
+          cursor="pointer"
+          onPress={handleDecline}
+          pressStyle={{ scale: 0.98, opacity: 0.92 }}
+          style={{ border: '1px solid var(--acoh-border)' }}
+        >
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={15}
+            fontWeight="600"
+            color="var(--acoh-body)"
+          >
+            Decline
+          </Text>
+        </XStack>
+
+        <YStack gap={8}>
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={12}
+            color="var(--acoh-muted)"
+          >
+            Reason for declining (optional)
+          </Text>
+          <XStack
+            backgroundColor="#FFFFFF"
+            borderRadius={22}
+            paddingLeft={20}
+            paddingRight={14}
+            paddingVertical={12}
+            alignItems="center"
+            justifyContent="space-between"
+            gap={12}
+            style={{ border: '1px solid #d4d4d4' }}
+          >
+            <input
+              type="text"
               value={reason}
-              onChangeText={(t: string) => { setReason(t); if (error) setError('') }}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder='"I think we should focus on..."'
+              style={{
+                flex: 1,
+                minWidth: 0,
+                border: 'none',
+                outline: 'none',
+                background: 'transparent',
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: 14,
+                color: 'var(--acoh-foreground)',
+              }}
             />
-            <XStack
-              position="absolute"
-              right={12}
-              top={0}
-              bottom={0}
-              alignItems="center"
-              justifyContent="center"
-              pointerEvents="none"
-            >
-              <Mic size={18} color="#8C8C8C" />
-            </XStack>
+            <Mic size={20} color="var(--acoh-muted)" />
           </XStack>
-          {error && <Text fontSize={13} color="#C45C2C">{error}</Text>}
         </YStack>
-      </ScreenContent>
-    </YStack>
+      </YStack>
+    </AuthShell>
   )
 }

@@ -29,6 +29,7 @@ import { PartnerProgress } from './screens/home/PartnerProgress'
 import { SparksFeed } from './screens/home/SparksFeed'
 import { QuickActions } from './screens/home/QuickActions'
 import { ApprovalBanners } from './screens/home/ApprovalBanners'
+import { ReviewRatings } from './screens/home/ReviewRatings'
 
 // Us
 import { FocusAreaOverview } from './screens/us/FocusAreaOverview'
@@ -99,6 +100,7 @@ export default function App() {
           <Route path="/home/sparks" element={<SparksFeed />} />
           <Route path="/home/quick-actions" element={<QuickActions />} />
           <Route path="/home/approvals" element={<ApprovalBanners />} />
+          <Route path="/home/review-ratings" element={<ReviewRatings />} />
 
           {/* Us tab */}
           <Route path="/us" element={<FocusAreaOverview />} />

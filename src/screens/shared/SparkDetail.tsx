@@ -1,60 +1,131 @@
 import { YStack, XStack, Text } from 'tamagui'
-import { useParams, useNavigate } from 'react-router-dom'
-import { NavBar } from '../../components/NavBar'
-import { ScreenContent, PrimaryButton, OutlineButton, BorderCard, MutedText } from '../../components/shared'
-import { SPARKS } from '../../data/fakeData'
-import { Flame, Star, ThumbsUp, Heart, Trophy, Sparkles } from 'lucide-react'
-
-const iconMap: Record<string, any> = {
-  flame: Flame, star: Star, 'thumbs-up': ThumbsUp, heart: Heart,
-  trophy: Trophy, sparkles: Sparkles,
-}
+import { useNavigate } from 'react-router-dom'
+import { Sparkles } from 'lucide-react'
+import { AuthShell, PrimaryPillButton } from '../../components/auth-ui'
+import { HomeNavBar } from '../../components/home-ui'
+import { useToast } from '../../components/Toast'
 
 export function SparkDetail() {
-  const { id } = useParams()
   const navigate = useNavigate()
-  const spark = SPARKS.find(s => s.id === Number(id)) ?? SPARKS[0]
-  const Icon = iconMap[spark.type] || Sparkles
+  const toast = useToast()
+
+  const handleMarkRead = () => {
+    toast.show('Spark marked as read')
+    navigate('/home/sparks')
+  }
 
   return (
-    <YStack flex={1}>
-      <NavBar title="Spark Detail" />
-      <ScreenContent>
-        <YStack alignItems="center" gap={16} marginTop={40}>
-          <Icon size={48} color="#1C1C1C" />
-          <Text fontSize={18} fontWeight="600" color="#1C1C1C">From {spark.from}</Text>
-          <MutedText>{spark.time}</MutedText>
-          {spark.message && (
-            <BorderCard>
-              <Text fontSize={14} color="#1C1C1C" textAlign="center">{spark.message}</Text>
-            </BorderCard>
-          )}
-          {spark.habitName && (
-            <BorderCard>
-              <XStack gap={8} alignItems="center">
-                <MutedText>Tied to habit</MutedText>
-                <YStack>
-                  <Text fontSize={14} color="#1C1C1C">{spark.habitName}</Text>
-                  <MutedText>Communication · Daily · Shared</MutedText>
-                </YStack>
-              </XStack>
-            </BorderCard>
-          )}
-        </YStack>
-        <YStack flex={1} />
-        <YStack gap={12}>
-          <PrimaryButton label="Send a Spark Back" onPress={() => navigate('/shared/send-spark')} />
-          <OutlineButton label="Mark as Read" onPress={() => navigate('/home/sparks')} />
+    <AuthShell>
+      <HomeNavBar title="Spark Detail" onBack={() => navigate(-1)} />
+
+      <YStack paddingHorizontal={16} paddingTop={40} paddingBottom={32} gap={16} alignItems="center">
+        <Sparkles size={48} color="var(--acoh-foreground)" />
+
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={13}
+          color="var(--acoh-body)"
+        >
+          From Partner
+        </Text>
+
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={20}
+          fontWeight="600"
+          color="var(--acoh-foreground)"
+          textAlign="center"
+        >
+          Great job on the check-in!
+        </Text>
+
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={13}
+          color="var(--acoh-body)"
+        >
+          2 minutes ago
+        </Text>
+
+        {/* Linked habit card */}
+        <YStack
+          backgroundColor="#ebebf9"
+          borderRadius={9}
+          padding={16}
+          gap={8}
+          width="100%"
+        >
           <Text
-            fontSize={14}
-            color="#8C8C8C"
-            textAlign="center"
-            cursor="pointer"
+            fontFamily="Outfit, sans-serif"
+            fontSize={12}
+            fontWeight="600"
+            color="var(--acoh-muted)"
           >
-            Delete Spark
+            Tied to habit
+          </Text>
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={14}
+            fontWeight="700"
+            color="var(--acoh-body)"
+          >
+            Daily hug or kiss
+          </Text>
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={12}
+            color="var(--acoh-muted)"
+          >
+            Intimacy · Daily · Shared
           </Text>
         </YStack>
-      </ScreenContent>
-    </YStack>
+
+        <YStack height={16} width="100%" />
+
+        <YStack width="100%" gap={12}>
+          <PrimaryPillButton
+            label="Send a Spark Back"
+            onPress={() => navigate('/shared/send-spark')}
+          />
+          <XStack
+            height={48}
+            borderRadius={24}
+            backgroundColor="#FFFFFF"
+            alignItems="center"
+            justifyContent="center"
+            cursor="pointer"
+            onPress={handleMarkRead}
+            pressStyle={{ scale: 0.98, opacity: 0.92 }}
+            style={{ border: '1px solid var(--acoh-border)' }}
+          >
+            <Text
+              fontFamily="Outfit, sans-serif"
+              fontSize={15}
+              fontWeight="600"
+              color="var(--acoh-body)"
+            >
+              Mark as Read
+            </Text>
+          </XStack>
+          <XStack
+            paddingVertical={10}
+            alignItems="center"
+            justifyContent="center"
+            cursor="pointer"
+            onPress={() => navigate(-1)}
+            pressStyle={{ opacity: 0.7 }}
+          >
+            <Text
+              fontFamily="Outfit, sans-serif"
+              fontSize={13}
+              fontWeight="700"
+              color="var(--acoh-body)"
+            >
+              Delete Spark
+            </Text>
+          </XStack>
+        </YStack>
+      </YStack>
+    </AuthShell>
   )
 }

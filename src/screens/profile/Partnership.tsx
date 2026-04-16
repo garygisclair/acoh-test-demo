@@ -1,78 +1,138 @@
 import { YStack, XStack, Text } from 'tamagui'
-import { NavBar } from '../../components/NavBar'
-import { ScreenContent, WireCard, Avatar, MutedText } from '../../components/shared'
-import { PARTNER } from '../../data/fakeData'
+import { useNavigate } from 'react-router-dom'
+import { AuthShell } from '../../components/auth-ui'
+import { HomeNavBar } from '../../components/home-ui'
+import { AVATAR_YOU } from '../../assets/onboarding'
+
+const STATUS_ROWS = [
+  { label: 'Status', value: 'Active' },
+  { label: 'Paired Since', value: 'March 15, 2026' },
+  { label: 'Focus Areas', value: '3 active' },
+  { label: 'Shared Habits', value: '4' },
+]
+
+const STATS_ROWS = [
+  { label: 'Sparks Exchanged', value: '47' },
+  { label: 'Check-Ins Completed', value: '12' },
+  { label: 'Avg Alignment', value: '76%' },
+  { label: 'Current Streak', value: '5 days' },
+]
 
 export function Partnership() {
+  const navigate = useNavigate()
+
   return (
-    <YStack flex={1}>
-      <NavBar title="Partnership" />
-      <ScreenContent>
-        <YStack gap={12} alignItems="center" padding={8}>
-          <Avatar letter={PARTNER.avatar} size={64} />
-          <Text fontSize={18} fontWeight="600" color="#1C1C1C">{PARTNER.name}</Text>
-          <MutedText>{PARTNER.email}</MutedText>
-        </YStack>
+    <AuthShell>
+      <HomeNavBar title="Partnership" onBack={() => navigate(-1)} />
 
-        <WireCard>
-          <YStack gap={8}>
-            <XStack justifyContent="space-between">
-              <MutedText>Status</MutedText>
-              <Text fontSize={14} fontWeight="600" color="#1C1C1C">Active</Text>
-            </XStack>
-            <XStack justifyContent="space-between">
-              <MutedText>Paired Since</MutedText>
-              <Text fontSize={14} color="#1C1C1C">March 15, 2026</Text>
-            </XStack>
-            <XStack justifyContent="space-between">
-              <MutedText>Focus Areas</MutedText>
-              <Text fontSize={14} color="#1C1C1C">5 active</Text>
-            </XStack>
-            <XStack justifyContent="space-between">
-              <MutedText>Shared Habits</MutedText>
-              <Text fontSize={14} color="#1C1C1C">4</Text>
-            </XStack>
-          </YStack>
-        </WireCard>
+      <YStack paddingHorizontal={16} paddingTop={24} paddingBottom={32} gap={16} alignItems="center">
+        {/* Partner avatar */}
+        <XStack width={64} height={64} borderRadius={32} overflow="hidden" backgroundColor="#dadaf1">
+          <img
+            src={AVATAR_YOU}
+            alt=""
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+            }}
+          />
+        </XStack>
 
-        <Text fontSize={16} fontWeight="700" color="#1C1C1C">Partnership Stats</Text>
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={18}
+          fontWeight="700"
+          color="var(--acoh-foreground)"
+          textAlign="center"
+        >
+          Jordan Smith
+        </Text>
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={13}
+          color="var(--acoh-body)"
+          textAlign="center"
+          marginTop={-12}
+        >
+          jordan@example.com
+        </Text>
 
-        <WireCard>
-          <YStack gap={8}>
-            <XStack justifyContent="space-between">
-              <MutedText>Sparks Exchanged</MutedText>
-              <Text fontSize={14} color="#1C1C1C">47</Text>
-            </XStack>
-            <XStack justifyContent="space-between">
-              <MutedText>Check-Ins Completed</MutedText>
-              <Text fontSize={14} color="#1C1C1C">12</Text>
-            </XStack>
-            <XStack justifyContent="space-between">
-              <MutedText>Avg Alignment</MutedText>
-              <Text fontSize={14} color="#1C1C1C">76%</Text>
-            </XStack>
-            <XStack justifyContent="space-between">
-              <MutedText>Current Streak</MutedText>
-              <Text fontSize={14} color="#1C1C1C">5 days</Text>
-            </XStack>
-          </YStack>
-        </WireCard>
+        {/* Status card */}
+        <InfoCard rows={STATUS_ROWS} />
 
-        <YStack flex={1} />
+        <YStack height={4} />
+
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={16}
+          fontWeight="700"
+          color="var(--acoh-foreground)"
+          textAlign="center"
+          width="100%"
+        >
+          Partnership Stats
+        </Text>
+
+        <InfoCard rows={STATS_ROWS} />
+
+        <YStack height={8} />
+
         <XStack
-          height={44}
-          borderRadius={9}
+          height={48}
+          borderRadius={24}
           backgroundColor="#FFFFFF"
-          borderWidth={1}
-          borderColor="#D4D4D4"
           alignItems="center"
           justifyContent="center"
           cursor="pointer"
-          pressStyle={{ scale: 0.97, opacity: 0.85 }}
+          pressStyle={{ scale: 0.98, opacity: 0.92 }}
+          width="100%"
+          style={{ border: '1px solid var(--acoh-primary)' }}
         >
-          <Text fontSize={14} fontWeight="600" color="#8C8C8C">Dissolve Partnership</Text>
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={15}
+            fontWeight="600"
+            color="var(--acoh-primary)"
+          >
+            Dissolve Partnership
+          </Text>
         </XStack>
-      </ScreenContent>
+      </YStack>
+    </AuthShell>
+  )
+}
+
+function InfoCard({ rows }: { rows: { label: string; value: string }[] }) {
+  return (
+    <YStack
+      backgroundColor="#ebebf9"
+      borderRadius={9}
+      paddingHorizontal={16}
+      paddingVertical={14}
+      gap={8}
+      width="100%"
+    >
+      {rows.map(row => (
+        <XStack key={row.label} justifyContent="space-between" alignItems="center">
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={14}
+            color="var(--acoh-body)"
+          >
+            {row.label}
+          </Text>
+          <Text
+            fontFamily="Outfit, sans-serif"
+            fontSize={14}
+            fontWeight="600"
+            color="var(--acoh-foreground)"
+          >
+            {row.value}
+          </Text>
+        </XStack>
+      ))}
     </YStack>
   )
 }

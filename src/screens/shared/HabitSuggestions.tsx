@@ -1,102 +1,233 @@
 import { YStack, XStack, Text, Separator } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
-import { NavBar } from '../../components/NavBar'
-import { ScreenContent, BorderCard, WireCard, OutlineButton, PrimaryButton, MutedText } from '../../components/shared'
+import { AuthShell, PrimaryPillButton } from '../../components/auth-ui'
+import { HomeNavBar } from '../../components/home-ui'
+import { useToast } from '../../components/Toast'
 
-const FROM_PARTNER = [
-  {
-    name: 'Morning meditation',
-    focusArea: 'Health & Energy',
-    frequency: 'Daily',
-    time: '2h ago',
-    message: 'I think this would help us both start the day calmer.',
-  },
-  {
-    name: 'Weekly budget review',
-    focusArea: 'Communication',
-    frequency: 'Weekly',
-    time: '1d ago',
-    message: 'Let\'s stay on top of our finances together.',
-  },
+type PartnerSuggestion = {
+  id: number
+  title: string
+  message: string
+  meta: string
+  time: string
+}
+
+type YourSuggestion = {
+  id: number
+  title: string
+  message: string
+  meta: string
+  time: string
+  status: 'Accepted' | 'Declined' | 'Pending'
+}
+
+const FROM_PARTNER: PartnerSuggestion[] = [
+  { id: 1, title: 'Morning meditation', message: '"Try 5 min of mindfulness each morning"', meta: 'Health & Energy · Daily', time: '2h ago' },
+  { id: 2, title: 'Weekly budget check', message: '"Let\'s review our spending together"', meta: 'Finances · Weekly', time: '1d ago' },
 ]
 
-const YOUR_SUGGESTIONS = [
-  {
-    name: 'Evening walk together',
-    status: 'Accepted',
-    time: '3d ago',
-  },
-  {
-    name: 'Read before bed',
-    status: 'Declined',
-    time: '5d ago',
-  },
+const YOUR_SUGGESTIONS: YourSuggestion[] = [
+  { id: 101, title: 'Read together', message: '"We should read the same book"', meta: 'Personal Growth · Daily', time: '3d ago', status: 'Accepted' },
+  { id: 102, title: 'No screens after 9pm', message: '"Could help us wind down together"', meta: 'Quality Time · Daily', time: '5d ago', status: 'Declined' },
 ]
 
 export function HabitSuggestions() {
   const navigate = useNavigate()
+  const toast = useToast()
+
+  const handleAccept = () => {
+    toast.show('You accepted a suggested habit')
+    navigate('/habits')
+  }
 
   return (
-    <YStack flex={1}>
-      <NavBar title="Habit Suggestions" />
-      <ScreenContent>
-        {/* From Partner */}
-        <Text fontSize={16} fontWeight="700" color="#1C1C1C">From Partner</Text>
-        <YStack gap={10}>
-          {FROM_PARTNER.map(s => (
-            <BorderCard key={s.name}>
-              <YStack gap={8}>
-                <XStack justifyContent="space-between" alignItems="center">
-                  <Text fontSize={14} fontWeight="600" color="#1C1C1C">{s.name}</Text>
-                  <MutedText>{s.focusArea}</MutedText>
-                </XStack>
-                <XStack justifyContent="space-between" alignItems="center">
-                  <MutedText>{s.frequency}</MutedText>
-                  <MutedText>{s.time}</MutedText>
-                </XStack>
-                <Text fontSize={13} color="#8C8C8C" fontStyle="italic">{s.message}</Text>
-                <XStack gap={8}>
-                  <XStack flex={1}>
-                    <OutlineButton label="Accept" />
-                  </XStack>
-                  <XStack flex={1}>
-                    <OutlineButton label="Decline" />
-                  </XStack>
-                  <XStack flex={1}>
-                    <OutlineButton label="Modify" />
-                  </XStack>
-                </XStack>
-              </YStack>
-            </BorderCard>
-          ))}
-        </YStack>
+    <AuthShell>
+      <HomeNavBar title="Habit Suggestions" onBack={() => navigate(-1)} />
 
-        <Separator borderColor="#D4D4D4" />
+      <YStack paddingHorizontal={16} paddingTop={16} paddingBottom={32} gap={12}>
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={14}
+          fontWeight="600"
+          color="var(--acoh-foreground)"
+        >
+          From Partner
+        </Text>
 
-        {/* Your Suggestions */}
-        <Text fontSize={16} fontWeight="700" color="#1C1C1C">Your Suggestions</Text>
-        <YStack gap={8}>
-          {YOUR_SUGGESTIONS.map(s => (
-            <WireCard key={s.name}>
-              <XStack justifyContent="space-between" alignItems="center">
-                <YStack gap={2}>
-                  <Text fontSize={14} color="#1C1C1C">{s.name}</Text>
-                  <MutedText>{s.time}</MutedText>
-                </YStack>
-                <Text
-                  fontSize={13}
-                  fontWeight="600"
-                  color={s.status === 'Accepted' ? '#4CAF50' : '#8C8C8C'}
-                >
-                  {s.status}
-                </Text>
-              </XStack>
-            </WireCard>
-          ))}
-        </YStack>
+        {FROM_PARTNER.map(s => (
+          <PartnerSuggestionCard key={s.id} suggestion={s} onAccept={handleAccept} />
+        ))}
 
-        <PrimaryButton label="+ Suggest a Habit" onPress={() => navigate('/shared/suggest-a-habit')} />
-      </ScreenContent>
+        <Separator borderColor="#d4d4d4" marginVertical={4} />
+
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={14}
+          fontWeight="600"
+          color="var(--acoh-foreground)"
+        >
+          Your Suggestions
+        </Text>
+
+        {YOUR_SUGGESTIONS.map(s => (
+          <YourSuggestionCard key={s.id} suggestion={s} />
+        ))}
+
+        <PrimaryPillButton
+          label="+ Suggest a Habit"
+          onPress={() => navigate('/shared/suggest-a-habit')}
+        />
+      </YStack>
+    </AuthShell>
+  )
+}
+
+function PartnerSuggestionCard({
+  suggestion,
+  onAccept,
+}: {
+  suggestion: PartnerSuggestion
+  onAccept: () => void
+}) {
+  return (
+    <YStack
+      backgroundColor="#ebebf9"
+      borderRadius={9}
+      paddingHorizontal={16}
+      paddingVertical={14}
+      gap={10}
+      style={{ border: '1px solid #d4d4d4' }}
+    >
+      <XStack justifyContent="space-between" alignItems="center">
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={14}
+          fontWeight="600"
+          color="var(--acoh-foreground)"
+        >
+          {suggestion.title}
+        </Text>
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={12}
+          color="var(--acoh-muted)"
+        >
+          {suggestion.time}
+        </Text>
+      </XStack>
+      <Text
+        fontFamily="Outfit, sans-serif"
+        fontSize={13}
+        color="var(--acoh-muted)"
+      >
+        {suggestion.message}
+      </Text>
+      <Text
+        fontFamily="Outfit, sans-serif"
+        fontSize={12}
+        color="var(--acoh-muted)"
+      >
+        {suggestion.meta}
+      </Text>
+      <XStack gap={8}>
+        <ActionButton label="Accept" variant="primary" onPress={onAccept} />
+        <ActionButton label="Decline" variant="outline" />
+        <ActionButton label="Modify" variant="outline" />
+      </XStack>
     </YStack>
+  )
+}
+
+function YourSuggestionCard({ suggestion }: { suggestion: YourSuggestion }) {
+  const statusColor =
+    suggestion.status === 'Accepted'
+      ? 'var(--acoh-foreground)'
+      : 'var(--acoh-muted)'
+  return (
+    <YStack
+      backgroundColor="#ebebf9"
+      borderRadius={9}
+      paddingHorizontal={16}
+      paddingVertical={14}
+      gap={10}
+      style={{ border: '1px solid #d4d4d4' }}
+    >
+      <XStack justifyContent="space-between" alignItems="center">
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={14}
+          fontWeight="600"
+          color="var(--acoh-foreground)"
+        >
+          {suggestion.title}
+        </Text>
+        <Text
+          fontFamily="Outfit, sans-serif"
+          fontSize={12}
+          color="var(--acoh-muted)"
+        >
+          {suggestion.time}
+        </Text>
+      </XStack>
+      <Text
+        fontFamily="Outfit, sans-serif"
+        fontSize={13}
+        color="var(--acoh-muted)"
+      >
+        {suggestion.message}
+      </Text>
+      <Text
+        fontFamily="Outfit, sans-serif"
+        fontSize={12}
+        color="var(--acoh-muted)"
+      >
+        {suggestion.meta}
+      </Text>
+      <Text
+        fontFamily="Outfit, sans-serif"
+        fontSize={12}
+        fontWeight="600"
+        color={statusColor}
+      >
+        {suggestion.status}
+      </Text>
+    </YStack>
+  )
+}
+
+function ActionButton({
+  label,
+  variant,
+  onPress,
+}: {
+  label: string
+  variant: 'primary' | 'outline'
+  onPress?: () => void
+}) {
+  const isPrimary = variant === 'primary'
+  return (
+    <XStack
+      flex={1}
+      height={38}
+      borderRadius={24}
+      alignItems="center"
+      justifyContent="center"
+      cursor="pointer"
+      onPress={onPress}
+      pressStyle={{ scale: 0.98, opacity: 0.92 }}
+      backgroundColor={isPrimary ? 'var(--acoh-primary)' : '#FFFFFF'}
+      style={{
+        border: isPrimary ? 'none' : '1px solid var(--acoh-border)',
+      }}
+    >
+      <Text
+        fontFamily="Outfit, sans-serif"
+        fontSize={14}
+        fontWeight="600"
+        color={isPrimary ? '#FFFFFF' : 'var(--acoh-foreground)'}
+      >
+        {label}
+      </Text>
+    </XStack>
   )
 }

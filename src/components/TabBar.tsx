@@ -24,7 +24,7 @@ export function TabBar({ activeTab }: TabBarProps) {
   return (
     <YStack>
       <Separator borderColor="#D4D4D4" />
-      <XStack height={56} backgroundColor="#FFFFFF" alignItems="center" justifyContent="space-around" paddingTop={8}>
+      <XStack height={56} backgroundColor="transparent" alignItems="center" justifyContent="space-around" paddingTop={8}>
         {tabs.map(tab => {
           const isActive = currentTab === tab.path
           const color = isActive ? '#1C1C1C' : '#8C8C8C'
@@ -52,7 +52,7 @@ export function TabBar({ activeTab }: TabBarProps) {
         })}
       </XStack>
       {/* Home indicator */}
-      <XStack height={34} backgroundColor="#FFFFFF" alignItems="flex-start" justifyContent="center" paddingTop={8}>
+      <XStack height={34} backgroundColor="transparent" alignItems="flex-start" justifyContent="center" paddingTop={8}>
         <XStack width={134} height={5} backgroundColor="#1C1C1C" borderRadius={3} />
       </XStack>
     </YStack>

@@ -21,7 +21,13 @@ export function useToast(): ToastCtx {
   return ctx
 }
 
-export function ToastProvider({ children }: { children: ReactNode }) {
+export function ToastProvider({
+  children,
+  bottomInset = 0,
+}: {
+  children: ReactNode
+  bottomInset?: number
+}) {
   const [message, setMessage] = useState<string | null>(null)
   const [visible, setVisible] = useState(false)
   const hideTimer = useRef<number | null>(null)
@@ -61,7 +67,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             position: 'absolute',
             left: 0,
             right: 0,
-            bottom: 24,
+            bottom: 24 + bottomInset,
             display: 'flex',
             justifyContent: 'center',
             pointerEvents: 'none',
