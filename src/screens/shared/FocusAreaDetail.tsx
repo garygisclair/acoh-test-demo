@@ -83,7 +83,7 @@ const AREA_DETAILS: Record<string, AreaDetail> = {
 export function FocusAreaDetail() {
   const navigate = useNavigate()
   const { id } = useParams()
-  const area = (id && AREA_DETAILS[id]) ?? AREA_DETAILS.intimacy
+  const area: AreaDetail = (id ? AREA_DETAILS[id] : undefined) ?? AREA_DETAILS.intimacy
 
   return (
     <AuthShell>
