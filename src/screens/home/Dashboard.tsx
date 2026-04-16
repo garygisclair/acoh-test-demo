@@ -16,6 +16,7 @@ import { TODAYS_HABITS, SPARKS } from '../../data/fakeData'
 import { AVATAR_ME } from '../../assets/home'
 import { useBottomSheet } from '../../components/BottomSheet'
 import { useToast } from '../../components/Toast'
+import { hasSeenTour, recordTourSeen } from '../../components/home-ui'
 
 type DashboardState = 'full' | 'solo' | 'pending'
 
@@ -155,7 +156,6 @@ export function Dashboard() {
   const navigate = useNavigate()
   const sheet = useBottomSheet()
   const toast = useToast()
-  const sheetOpened = useRef(false)
   const [state, setState] = useState<DashboardState>('full')
   const [habits, setHabits] = useState(TODAYS_HABITS.map(h => ({ ...h })))
 
@@ -166,9 +166,11 @@ export function Dashboard() {
     sheet.open({ title: 'Quick tour', body: <HomeIntroCarousel /> })
 
   useEffect(() => {
-    if (sheetOpened.current) return
-    sheetOpened.current = true
-    const t = setTimeout(openIntro, 400)
+    if (hasSeenTour('home')) return
+    const t = setTimeout(() => {
+      recordTourSeen('home')
+      openIntro()
+    }, 400)
     return () => clearTimeout(t)
   }, [sheet])
 

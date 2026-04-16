@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { YStack, XStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
 import { AuthShell } from '../../components/auth-ui'
-import { TabTopBar } from '../../components/home-ui'
+import { TabTopBar, hasSeenTour, recordTourSeen } from '../../components/home-ui'
 import { useBottomSheet } from '../../components/BottomSheet'
 
 type Rating = 'Poor' | 'Fair' | 'Good' | 'Excellent'
@@ -162,15 +162,16 @@ function UsIntroCarousel() {
 export function FocusAreaOverview() {
   const navigate = useNavigate()
   const sheet = useBottomSheet()
-  const sheetOpened = useRef(false)
 
   const openIntro = () =>
     sheet.open({ title: 'Quick tour', body: <UsIntroCarousel /> })
 
   useEffect(() => {
-    if (sheetOpened.current) return
-    sheetOpened.current = true
-    const t = setTimeout(openIntro, 400)
+    if (hasSeenTour('us')) return
+    const t = setTimeout(() => {
+      recordTourSeen('us')
+      openIntro()
+    }, 400)
     return () => clearTimeout(t)
   }, [sheet])
 

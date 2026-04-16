@@ -3,7 +3,7 @@ import { YStack, XStack, Text } from 'tamagui'
 import { useNavigate } from 'react-router-dom'
 import { ArrowRight, Square, SquareCheckBig, Pencil } from 'lucide-react'
 import { AuthShell } from '../../components/auth-ui'
-import { TabTopBar } from '../../components/home-ui'
+import { TabTopBar, hasSeenTour, recordTourSeen } from '../../components/home-ui'
 import { useBottomSheet } from '../../components/BottomSheet'
 
 type Habit = {
@@ -177,16 +177,17 @@ function HabitsIntroCarousel() {
 export function HabitList() {
   const navigate = useNavigate()
   const sheet = useBottomSheet()
-  const sheetOpened = useRef(false)
   const [groups, setGroups] = useState<HabitGroup[]>(INITIAL_GROUPS)
 
   const openIntro = () =>
     sheet.open({ title: 'Quick tour', body: <HabitsIntroCarousel /> })
 
   useEffect(() => {
-    if (sheetOpened.current) return
-    sheetOpened.current = true
-    const t = setTimeout(openIntro, 400)
+    if (hasSeenTour('habits')) return
+    const t = setTimeout(() => {
+      recordTourSeen('habits')
+      openIntro()
+    }, 400)
     return () => clearTimeout(t)
   }, [sheet])
 

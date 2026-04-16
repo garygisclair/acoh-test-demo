@@ -4,6 +4,36 @@ import { BackButton } from './auth-ui'
 import { AVATAR_ME } from '../assets/home'
 
 /**
+ * Tab-tour persistence — sessionStorage-backed so the auto-open tutorial
+ * only fires once per browser session per tab key. A full page reload
+ * (or new tab) re-arms; refresh demonstrates the first-visit experience.
+ */
+const SEEN_TOURS_KEY = 'acoh_seen_tours'
+
+function readSeenTours(): Set<string> {
+  try {
+    const raw = sessionStorage.getItem(SEEN_TOURS_KEY)
+    return new Set(raw ? (JSON.parse(raw) as string[]) : [])
+  } catch {
+    return new Set()
+  }
+}
+
+export function hasSeenTour(key: string): boolean {
+  return readSeenTours().has(key)
+}
+
+export function recordTourSeen(key: string) {
+  try {
+    const seen = readSeenTours()
+    seen.add(key)
+    sessionStorage.setItem(SEEN_TOURS_KEY, JSON.stringify([...seen]))
+  } catch {
+    // sessionStorage unavailable — graceful no-op
+  }
+}
+
+/**
  * Shared hi-fi NavBar used by sub-screens in the Home tab (and applicable
  * across other main-app sections). Matches Figma spec: pill BackButton
  * (left), centered Outfit SemiBold 16 title, 36×36 spacer (right).
