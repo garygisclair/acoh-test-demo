@@ -6,8 +6,8 @@ import { AnimatedOutlet } from './AnimatedRoutes'
 import { BottomSheetProvider } from './BottomSheet'
 import { ToastProvider } from './Toast'
 
-const AUTH_ROUTES = ['/welcome', '/intro', '/sign-up', '/sign-in', '/forgot-password', '/reset-password', '/accept-invitation']
-const LIGHT_STATUS_ROUTES = ['/welcome']
+const AUTH_ROUTES = ['/welcome', '/lab/splash', '/intro', '/sign-up', '/sign-in', '/forgot-password', '/reset-password', '/accept-invitation']
+const LIGHT_STATUS_ROUTES = ['/welcome', '/lab/splash']
 const TRANSPARENT_STATUS_ROUTES = ['/intro', '/sign-up', '/sign-in', '/forgot-password', '/reset-password', '/accept-invitation', '/onboarding/add-photo', '/onboarding/send-invitation', '/onboarding/invitation-sent', '/onboarding/partnership-confirmed', '/onboarding/select-focus-areas', '/onboarding/baseline-ratings', '/onboarding/review', '/onboarding/do-this-later', '/onboarding/setup-pending', '/home', '/home/sparks', '/home/quick-actions', '/home/approvals', '/home/review-ratings', '/notifications', '/us', '/us/weekly-check-in', '/us/key-insight', '/us/suggested-actions', '/habits', '/habits/focus-area-management', '/shared/habit-suggestions', '/shared/suggest-a-habit', '/shared/weekly-check-in-flow', '/profile', '/profile/partnership', '/profile/notification-prefs', '/profile/app-settings', '/profile/sign-out', '/shared/add-habit', '/shared/send-spark', '/shared/approval-review']
 const ONBOARDING_ROUTES = ['/onboarding']
 

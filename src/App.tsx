@@ -3,6 +3,7 @@ import { PhoneFrame } from './components/PhoneFrame'
 
 // Auth
 import { Welcome } from './screens/auth/Welcome'
+import { WelcomeLab } from './screens/lab/WelcomeLab'
 import { Intro } from './screens/auth/Intro'
 import { SignUp } from './screens/auth/SignUp'
 import { SignIn } from './screens/auth/SignIn'
@@ -74,6 +75,7 @@ export default function App() {
           {/* Auth */}
           <Route path="/" element={<Navigate to="/welcome" replace />} />
           <Route path="/welcome" element={<Welcome />} />
+          <Route path="/lab/splash" element={<WelcomeLab />} />
           <Route path="/intro" element={<Intro />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
